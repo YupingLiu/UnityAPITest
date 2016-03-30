@@ -23,6 +23,7 @@ public class UseScriptableObject : MonoBehaviour {
             {
                 light.color = myScriptableObject.thisColor;
             }
+            light.intensity = 8.0f;
             myLights.Add(light);
         }
 	}
@@ -31,7 +32,7 @@ public class UseScriptableObject : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("Fire1"))
         {
-            UpdateLights();
+            TurnOnOrOffLights();
         }
         if (Input.GetButtonDown("Fire2"))
         {
@@ -39,11 +40,19 @@ public class UseScriptableObject : MonoBehaviour {
         }
 	}
 
-    private void UpdateLights()
+    private void TurnOnOrOffLights()
     {
         for (int i = 0; i < myLights.Count; i++)
         {
             myLights[i].enabled = !myLights[i].enabled;
+        }
+    }
+
+    private void UpdateLights()
+    {
+        for (int i = 0; i < myLights.Count; i++)
+        {
+            myLights[i].color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
         }
     }
 }
