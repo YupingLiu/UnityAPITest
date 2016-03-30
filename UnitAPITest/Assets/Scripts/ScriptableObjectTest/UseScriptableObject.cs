@@ -31,10 +31,19 @@ public class UseScriptableObject : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("Fire1"))
         {
-            for (int i = 0; i < myLights.Count; i++)
-            {
-                myLights[i].enabled = !myLights[i].enabled;
-            }
+            UpdateLights();
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            UpdateLights();
         }
 	}
+
+    private void UpdateLights()
+    {
+        for (int i = 0; i < myLights.Count; i++)
+        {
+            myLights[i].enabled = !myLights[i].enabled;
+        }
+    }
 }
