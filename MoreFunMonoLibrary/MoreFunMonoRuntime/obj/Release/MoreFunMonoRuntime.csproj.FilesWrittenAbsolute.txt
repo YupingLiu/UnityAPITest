@@ -1,0 +1,2 @@
+/Users/DonaldW/Documents/projects/NewBorn/nb_proj/trunk/NBProject/Assets/Plugins/MoreFunMonoRuntime.dll
+/Users/DonaldW/Documents/projects/NewBorn/nb_proj/trunk/MoreFunMonoLibrary/MoreFunMonoRuntime/obj/Release/MoreFunMonoRuntime.dll

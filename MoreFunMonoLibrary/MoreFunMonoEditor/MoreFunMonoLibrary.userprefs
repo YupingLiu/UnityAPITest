@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="MoreFunMonoEditor.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Sources/Editor/MoreDebugRuntimeFilterEditor.cs">
+    <Files>
+      <File FileName="../MoreFunMonoRuntime/Sources/MoreDebugRuntimeFilter.cs" Line="7" Column="11" />
+      <File FileName="Sources/Editor/MoreDebugRuntimeFilterEditor.cs" Line="7" Column="2" />
+      <File FileName="../MoreFunMonoRuntime/Sources/MoreDebug.cs" Line="240" Column="21" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,3 @@
+D:\My Experiments\UnitAPITest\UnityAPITest\UnitAPITest\Assets\Plugins\MoreFunMonoEditor.dll
+D:\My Experiments\UnitAPITest\UnityAPITest\MoreFunMonoLibrary\MoreFunMonoEditor\obj\Release\MoreFunMonoEditor.csprojResolveAssemblyReference.cache
+D:\My Experiments\UnitAPITest\UnityAPITest\MoreFunMonoLibrary\MoreFunMonoEditor\obj\Release\MoreFunMonoEditor.dll

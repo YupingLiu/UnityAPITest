@@ -1,0 +1,2 @@
+/Users/DonaldW/Documents/projects/NewBorn/nb_proj/trunk/NBProject/Assets/Plugins/Editor/MoreFunMonoEditor.dll
+/Users/DonaldW/Documents/projects/NewBorn/nb_proj/trunk/MoreFunMonoLibrary/MoreFunMonoEditor/obj/Release/MoreFunMonoEditor.dll

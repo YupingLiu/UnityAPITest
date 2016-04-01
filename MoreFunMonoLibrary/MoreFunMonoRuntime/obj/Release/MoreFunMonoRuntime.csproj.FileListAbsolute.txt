@@ -1,0 +1,2 @@
+D:\My Experiments\UnitAPITest\UnityAPITest\UnitAPITest\Assets\Plugins\MoreFunMonoRuntime.dll
+D:\My Experiments\UnitAPITest\UnityAPITest\MoreFunMonoLibrary\MoreFunMonoRuntime\obj\Release\MoreFunMonoRuntime.dll
