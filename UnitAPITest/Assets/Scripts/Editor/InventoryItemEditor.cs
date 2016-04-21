@@ -147,24 +147,47 @@ public class InventoryItemEditor : EditorWindow
 
     private void OpenItemList()
     {
-        if (true)
+        string absPath = EditorUtility.OpenFilePanel("Select Inventory Item List", "", "");
+        if (absPath.StartsWith(Application.dataPath))
         {
-            
+            string relPath = absPath.Substring(Application.dataPath.Length - "Assets".Length);
+            inventoryItemList = AssetDatabase.LoadAssetAtPath(relPath, typeof(InventoryItemList)) as InventoryItemList;
+            if (null == inventoryItemList.itemList)
+            {
+                inventoryItemList.itemList = new List<InventoryItem>();
+            }
+            if (inventoryItemList)
+            {
+                EditorPrefs.SetString("ObjectPath", relPath);
+            }
         }
     }
 
     private void CreateNewItemList()
     {
-
+        // There is no overwrite protection here!
+        // There is No "Are you sure you want to overwrite your existing object?"
+        // This should probably get a string from the user to create a new name and pass it ...
+        viewIndex = 1;
+        inventoryItemList = CreateInventoryItemList.Create();
+        if (inventoryItemList)
+        {
+            inventoryItemList.itemList = new List<InventoryItem>();
+            string relPath = AssetDatabase.GetAssetPath(inventoryItemList);
+            EditorPrefs.SetString("ObjectPath", relPath);
+        }
     }
 
     private void AddItem()
     {
-
+        InventoryItem newItem = new InventoryItem();
+        newItem.itemName = "New Item";
+        inventoryItemList.itemList.Add(newItem);
+        viewIndex = inventoryItemList.itemList.Count;
     }
 
     private void DeleteItem(int index)
     {
-
+        inventoryItemList.itemList.RemoveAt(index);
     }
 }
