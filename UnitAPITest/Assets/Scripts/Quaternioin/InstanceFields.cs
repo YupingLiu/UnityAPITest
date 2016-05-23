@@ -1,5 +1,4 @@
-﻿using MoreFun;
-using UnityEngine;
+﻿using UnityEngine;
 public class InstanceFields : MonoBehaviour {
 
     // 1、eulerAngles属性：欧拉角
@@ -17,7 +16,9 @@ public class InstanceFields : MonoBehaviour {
     private Quaternion _lookRotationQuat = Quaternion.identity;
 
     // 4、ToAngleAxis方法：Quaternion实例的角轴表示
-
+    public Transform _toAngleAxisTrans;
+    private float angle;
+    private Vector3 axis = Vector3.zero;
 	void Start () {
 	
 	}
@@ -51,7 +52,7 @@ public class InstanceFields : MonoBehaviour {
         Debug.DrawLine(_setFromToRotationTrans.position, (_setFromToRotationTrans.position + Vector3.right) * 1.5f, Color.black);
         Debug.DrawLine(_setFromToRotationTrans.position, _setFromToRotationTrans.TransformPoint(Vector3.right * 1.5f), Color.yellow);
 
-        //2、SetLookRotation方法：设置Quaternion实例的朝向
+        //3、SetLookRotation方法：设置Quaternion实例的朝向
         //transform.forward方法与v1方向相同
         //transform.right垂直于由Vector3.zero、v1和v2这三点构成的平面
         //v2除了与Vector3.zero和v1构成平面来决定transform.right的方向外，
@@ -69,9 +70,25 @@ public class InstanceFields : MonoBehaviour {
         Debug.DrawLine(_setLookRotationTrans.position, _setLookRotationTrans.TransformPoint(Vector3.right * 2.5f), Color.yellow);
         Debug.DrawLine(_setLookRotationTrans.position, _setLookRotationTrans.TransformPoint(Vector3.forward * 2.5f), Color.yellow);
         //分别打印C.right与A、B的夹角
-        MoreDebug.MoreLog("C.right与A的夹角：" + Vector3.Angle(_setLookRotationTrans.right, _eulerAnglesA.position));
-        MoreDebug.MoreLog("C.right与B的夹角：" + Vector3.Angle(_setLookRotationTrans.right, _eulerAnglesB.position));
+        //MoreDebug.MoreLog("C.right与A的夹角：" + Vector3.Angle(_setLookRotationTrans.right, _eulerAnglesA.position));
+        //MoreDebug.MoreLog("C.right与B的夹角：" + Vector3.Angle(_setLookRotationTrans.right, _eulerAnglesB.position));
         //C.up与B的夹角
-        MoreDebug.MoreLog("C.up与B的夹角：" + Vector3.Angle(_setLookRotationTrans.up, _eulerAnglesB.position));
+        //MoreDebug.MoreLog("C.up与B的夹角：" + Vector3.Angle(_setLookRotationTrans.up, _eulerAnglesB.position));
+
+
+        //4、ToAngleAxis方法：Quaternion实例的角轴表示
+        //此方法用于将Quaternion实例转换为角轴表示
+        //在transform.rotation.ToAngleAxis(out angle, out axis)中，
+        //输出值angle和axis的含义为：要将GameObject对象的rotation从Quaternion.Identity状态变换成当前状态，
+        //只需要将GameObject对象绕着axis的轴向（指世界坐标系中）旋转angle角度即可。
+        //提示：
+        //此方法通常和静态方法AngleAxis(angle:float, axis:Vector3)联合使用
+        //使得一个物体的rotation始终和另一个物体的rotation保持一致
+        //使用ToAngleAxis获取A的Rotation的旋转和角度
+        _eulerAnglesA.rotation.ToAngleAxis(out angle, out axis);
+        //使用AngleAxis设置B的rotation，使得B的rotation状态和A相同
+        //当然也可以只使得B与A的axis相同，而angle不同
+        _toAngleAxisTrans.rotation = Quaternion.AngleAxis(angle, axis);
+        
     }
 }
