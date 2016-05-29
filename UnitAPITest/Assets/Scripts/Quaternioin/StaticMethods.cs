@@ -26,6 +26,8 @@ public class StaticMethods : MonoBehaviour
     // 4、FromToRotation方法：Quaternion变化
     public Transform A, B, C, D;
 
+
+
     public void Start()
     {
         // 1、Angle方法：Quaternion实例间夹角
@@ -62,10 +64,32 @@ public class StaticMethods : MonoBehaviour
         MoreDebug.MoreLog("Dot(q1, q2) : " + f);
     }
 
-    public void OnUpdate()
+    public void Update()
     {
         // 4、FromToRotation方法：Quaternion变化
+        // 此方法用来创建一个从参数fromDirection到toDirection的Quaternion变换。
+        // 其功能和实例方法SetFromToRotatin(fromDirection : Vector3, toDirection : Vector3)相同，只是用法上有些不同
 
+        // 使用实例方法
+        // 不可直接使用C.rotation.SetFromToRotation(A.position, B.position);
+        q.SetFromToRotation(A.position, B.position);
+        C.rotation = q;
+        // 使用类方法
+        D.rotation = Quaternion.FromToRotation(A.position, B.position);
+        // 在Scene视图中绘制直线
+        Debug.DrawLine(Vector3.zero, A.position, Color.white);
+        Debug.DrawLine(Vector3.zero, B.position, Color.white);
+        Debug.DrawLine(C.position, C.position + new Vector3(0.0f, 1.0f, 0.0f), Color.white);
+        Debug.DrawLine(C.position, C.TransformPoint(Vector3.up * 1.5f), Color.white);
+        Debug.DrawLine(D.position, D.position + new Vector3(0.0f, 1.0f, 0.0f), Color.white);
+        Debug.DrawLine(D.position, D.TransformPoint(Vector3.up * 1.5f), Color.white);
+
+        // 5、Inverse方法：逆向Quaternion值
+        // 此方法用于返回参数rotation的逆向Quaternion值。
+        // 例如，设有实例rotation = (x, y, z, w), 则Inverse(rotation) = (-x, -y, -z, w)。
+        // 从效果上说，设rotation.eulerAngles = (a, b, c)，则transform.rotation = Inverse(rotation)
+        // 相当于transform依次绕自身坐标系的z轴、x轴和y轴分别旋转-c度，-a度和-b度。
+        // 由于是局部坐标系内的变换，最后transform的欧拉角的各个分量值并不一定等于-a, -b或-c。
     }
 
     public void OnClick()
