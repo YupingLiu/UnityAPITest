@@ -26,7 +26,16 @@ public class StaticMethods : MonoBehaviour
     // 4、FromToRotation方法：Quaternion变化
     public Transform A, B, C, D;
 
+    // 5、Inverse方法：逆向Quaternion值
+    public Transform _inverseA, _inverseB;
 
+    // 6、Lerp方法：线性插值
+    public Transform _lerpA, _lerpB, _lerpC, _lerpD;
+    private float lerpSpeed = 0.2f;
+
+    // 8、RotateTowards方法：Quaternion插值
+    public Transform _RotateTowardsA, _RotateTowardsB, _RotateTowardsC;
+    private float rotateTowardSpeed = 10.0f;
 
     public void Start()
     {
@@ -62,6 +71,23 @@ public class StaticMethods : MonoBehaviour
         MoreDebug.MoreLog("q1的欧拉角 : " + q1.eulerAngles);
         MoreDebug.MoreLog("q2的欧拉角 : " + q2.eulerAngles);
         MoreDebug.MoreLog("Dot(q1, q2) : " + f);
+
+        // 5、Inverse方法：逆向Quaternion值
+        // 此方法用于返回参数rotation的逆向Quaternion值。
+        // 例如，设有实例rotation = (x, y, z, w), 则Inverse(rotation) = (-x, -y, -z, w)。
+        // 从效果上说，设rotation.eulerAngles = (a, b, c)，则transform.rotation = Inverse(rotation)
+        // 相当于transform依次绕自身坐标系的z轴、x轴和y轴分别旋转-c度，-a度和-b度。
+        // 由于是局部坐标系内的变换，最后transform的欧拉角的各个分量值并不一定等于-a, -b或-c。
+        q1 = Quaternion.identity;
+        q2 = Quaternion.identity;
+        q1.eulerAngles = new Vector3(10.0f, 20.0f, 30.0f);
+        q2 = Quaternion.Inverse(q1);
+
+        _inverseA.rotation = q1;
+        _inverseB.rotation = q2;
+        MoreDebug.MoreLog("q1的欧拉角 : " + q1.eulerAngles + "q1的rotation： " + q1);
+        MoreDebug.MoreLog("q2的欧拉角 : " + q2.eulerAngles + "q2的rotation： " + q2);
+
     }
 
     public void Update()
@@ -79,17 +105,46 @@ public class StaticMethods : MonoBehaviour
         // 在Scene视图中绘制直线
         Debug.DrawLine(Vector3.zero, A.position, Color.white);
         Debug.DrawLine(Vector3.zero, B.position, Color.white);
-        Debug.DrawLine(C.position, C.position + new Vector3(0.0f, 1.0f, 0.0f), Color.white);
+        Debug.DrawLine(C.position, C.position + Vector3.up, Color.yellow);
         Debug.DrawLine(C.position, C.TransformPoint(Vector3.up * 1.5f), Color.white);
-        Debug.DrawLine(D.position, D.position + new Vector3(0.0f, 1.0f, 0.0f), Color.white);
+        Debug.DrawLine(D.position, D.position + Vector3.up, Color.yellow);
         Debug.DrawLine(D.position, D.TransformPoint(Vector3.up * 1.5f), Color.white);
 
-        // 5、Inverse方法：逆向Quaternion值
-        // 此方法用于返回参数rotation的逆向Quaternion值。
-        // 例如，设有实例rotation = (x, y, z, w), 则Inverse(rotation) = (-x, -y, -z, w)。
-        // 从效果上说，设rotation.eulerAngles = (a, b, c)，则transform.rotation = Inverse(rotation)
-        // 相当于transform依次绕自身坐标系的z轴、x轴和y轴分别旋转-c度，-a度和-b度。
-        // 由于是局部坐标系内的变换，最后transform的欧拉角的各个分量值并不一定等于-a, -b或-c。
+        // 6、Lerp方法：线性插值
+        // 此方法用于返回参数from到to的线性插值。
+        // 当参数t <= 0时返回值为from，当参数t >= 1时返回值为to。
+        // 此方法执行速度比Slerp方法快，一般情况下可代替Slerp方法。
+        _lerpD.rotation = Quaternion.Lerp(_lerpA.rotation, _lerpB.rotation, Time.time * lerpSpeed);
+
+        // 9、Slerp方法：球面插值
+        // 此方法用于返回从参数from到to的球面插值。
+        // 当参数t <= 0时返回值为from，当参数t >= 1时返回值为to。
+        // 一般情况下可用方法Lerp代替。
+        _lerpC.rotation = Quaternion.Slerp(_lerpA.rotation, _lerpB.rotation, Time.time * lerpSpeed);
+
+        // 7、LookRotation方法：设置Quaternion的朝向
+        // 此方法用于返回一个Quaternion实例，使GameObject对象的z轴朝向参数forward方向。
+        // 此方法与方法SetLookRotation(view : Vector3, up : Vector3 = Vector3.up)功能相同，只是用法上有些不同。
+        // 使用实例方法
+        // 不可直接使用C.rotation.SetLookRotation(A.position, B.position);
+        q1.SetLookRotation(A.position, B.position);
+        _dotA.rotation = q1;
+        // 使用类方法
+        _dotB.rotation = Quaternion.LookRotation(A.position, B.position);
+        // 绘制直线，请在Scene视图中查看
+        Debug.DrawLine(_dotA.position, _dotA.TransformPoint(Vector3.up * 2.5f), Color.green);
+        Debug.DrawLine(_dotA.position, _dotA.TransformPoint(Vector3.forward * 2.5f), Color.blue);
+        Debug.DrawLine(_dotB.position, _dotB.TransformPoint(Vector3.up * 2.5f), Color.green);
+        Debug.DrawLine(_dotB.position, _dotB.TransformPoint(Vector3.forward * 2.5f), Color.blue);
+
+        // 8、RotateTowards方法：Quaternion插值
+        // 此方法用于返回从参数from到to的插值，且返回值的最大角度不超过maxDegreesDelta。
+        // 此方法功能与方法Slerp相似，只是maxDegreesDelta指的是角度值，不是插值系数。
+        // 当maxDegreesDelta < 0时，将沿着从to到from的方向插值计算。
+        // 调用方法RotateTowrads，并将其返回值赋给C.rotation
+        _RotateTowardsC.rotation = Quaternion.RotateTowards(_RotateTowardsA.rotation, _RotateTowardsB.rotation, Time.time * speed - 40.0f);
+        MoreDebug.MoreLog("C与A的欧拉角的差值 : " + (_RotateTowardsC.eulerAngles - _RotateTowardsA.eulerAngles)
+            + "maxDegreesDelta： " + (Time.time * speed - 40.0f));
     }
 
     public void OnClick()
