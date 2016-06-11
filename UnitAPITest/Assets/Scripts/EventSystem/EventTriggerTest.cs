@@ -8,5 +8,13 @@ public class EventTriggerTest : MonoBehaviour
         {
             EventManager.TriggerEvent("test");
         }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            EventManager.TriggerEvent("Spawn");
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            EventManager.TriggerEvent("Destroy");
+        }
     }
 }
